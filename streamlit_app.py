@@ -10,9 +10,15 @@ from gsheetsdb import connect
 # Create a connection object.
 conn = connect()
 
+@st.experimental_singleton()
+def connect():
+    # Create a connection object.
+    credentials = service_account.Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"],
+        scopes=[SCOPE],
+    )
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
-
 
 @st.cache(ttl=60)
 def run_query(query):
